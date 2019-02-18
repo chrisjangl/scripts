@@ -1,11 +1,11 @@
 # Preen Pets (SiteGround) - Staging version
-# version 1.0.1
+# Version 1.1.0
 
 # our variables
 STAGING=~/staging/
 LIVE=~/public_html/clients
-# SERVER="public_html/clients"
-SERVER="staging"
+SERVER="public_html"
+# SERVER="staging"
 BU_FOLDER="dc_bu"
 DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H%M)
@@ -62,6 +62,10 @@ function export_db {
 	echo
 }
 
+function wp_export_db {
+	wp db export
+}
+
 # TO DO - FIX THIS FUNCTION TO FIT OUR NEW BACKUP SYSTEM (currently set to check for Updraft backups)
 function hasbackups {
 
@@ -101,6 +105,43 @@ function backup_site {
 
 }
 
+function mv_to_staging {
+	clear
+	echo
+	# check if there is a folder in staging/ with the same name as our working folder
+	if [ -d $STAGING/$SITEFOLDER ]
+	then
+		echo "It looks like there is a matching staging folder for this site."
+		echo
+		echo "We'll be moving these back-up sets to the staging folder now..."
+		# check if there's a back-up folder
+		if [ ! -d $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER ];
+		then
+			# if there isn't, mkdir one.
+			mkdir $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER
+		fi
+		# check if we already have a back-up set for today
+		if [ ! -d $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE ];
+		then
+			# if we don't, let's make one
+			mkdir $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE
+		fi
+		# now that we definitely have a back-up set for today, copy the backups to it
+		mv $LIVE/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE/*$TIMESTAMP* $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE/
+		mv $LIVE/$SITEFOLDER/wp-content/*.sql $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE/
+
+		# do a cursory check that the staging back-up set has at least one backup in it
+		NUM_BACKUPS=$(find $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE/ -maxdepth 1 -name "*$TIMESTAMP*" | wc -l)
+		if [ $NUM_BACKUPS -gt 0 ]; then
+			echo "It appears that the copy was successful."
+		fi
+	else
+		echo
+		echo "It doesn't look like we have a matching folder in the staging area. Please manually copy the backups."
+	fi
+
+}
+
 function cp_to_staging {
 	clear
 	echo
@@ -124,6 +165,7 @@ function cp_to_staging {
 		fi
 		# now that we definitely have a back-up set for today, copy the backups to it
 		cp $LIVE/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE/*$TIMESTAMP* $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE/
+		cp $LIVE/$SITEFOLDER/wp-content/*.sql $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE/
 
 		# do a cursory check that the staging back-up set has at least one backup in it
 		NUM_BACKUPS=$(find $STAGING/$SITEFOLDER/wp-content/$BU_FOLDER/$DATE/ -maxdepth 1 -name "*$TIMESTAMP*" | wc -l)
@@ -138,7 +180,7 @@ function cp_to_staging {
 }
 
 
-# let's get started
+############################## let's get started #############################
 clear
 
 echo "We'll be backing up some sites here. Let's get started. "
@@ -160,27 +202,32 @@ read -p "REMINDER: We are about to work on $SERVER - which directory are we back
 cd $SITEFOLDER
 cd wp-content
 backup_site
-export_db
+wp_export_db
 echo 
 echo 
 echo "______________________________________________________"
 echo "Looks like we're done here. "
 echo
 
-# check if the user wants to copy the newly created backups to the staging site for this site
-echo "Would you like to copy these backups to the staging site for $SITEFOLDER ? "
-read -n1 -r -p "Press y for Yes, n for No " KEY
+# check if the user wants to move (or optionally, copy) the newly created backups to the staging site for this site
+echo "Would you like to move these backups to the staging site for $SITEFOLDER ? "
+read -n1 -r -p "Press y for Yes, n for No, c for COPY " KEY
 
 # check their response
 if 
 	[ "$KEY" = 'y' ];
 then
-	cp_to_staging
+	mv_to_staging
 else
 	if [ "$KEY" = 'n' ];
 	then
 		echo 
 		echo "Ok, thanks for playing."
 		exit
+	else
+		if [ "$KEY" = 'c' ];
+		then
+			cp_to_staging
+		fi
 	fi
 fi
