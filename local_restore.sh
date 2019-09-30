@@ -1,5 +1,5 @@
 # Localhost version
-# Version 0.9.1
+# Version 1.0.0
 
 # our variables
 #SERVER="public_html/staging"
@@ -9,23 +9,6 @@ DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H%M)
 
 # function definitions
-function makebackup {
-	TIMESTAMP=${DATE}_${TIME}
-	# check if BU folder exists, mkdir it if it doesn't
-	if [ ! -d "$BU_FOLDER" ]; then
-		mkdir "$BU_FOLDER"
-	fi
-
-	if [ ! -d "$BU_FOLDER/$DATE" ]; then
-		mkdir $BU_FOLDER/$DATE
-	fi
-
-	# TO DO - CHANGE THIS TO A CONDITIONAL
-	# check if this folder was backed up today
-	if [ true ]; then
-		zip -r $BU_FOLDER/$DATE/$1_$TIMESTAMP.zip $1/
-	fi
-}
 
 # TO DO - FIX THIS FUNCTION TO FIT OUR NEW BACKUP SYSTEM (currently set to check for Updraft backups)
 function hasbackups {
@@ -45,22 +28,43 @@ function hasbackups {
 	#echo "$result"
 }
 
-function backup_site {
-	shopt -s nullglob dotglob
-	folders=(*/)
-	for folder in "${folders[@]}"; do
-		FOLDER=${folder%/}
-		if [ $FOLDER = "dc_bu" ]; then
+function move_wp_content {
+	# check if there's already an "old directory", and mkdir if there isn't
+	if [ ! -d "old" ]; then
+		mkdir old/
+	fi;
+
+	# cd to the wp-content folder
+	cd $SERVER/$WPCONTENT
+
+	# for each folder in wp-content, move it to dc_bu/old/ (unless that folder IS dc_bu)
+	for i in $(ls -d */); do
+		# if it's the folder with old instances of the site, continue
+		if [[ $i == dc_bu* ]]; then
 			continue
 		fi;
-		echo backing up $FOLDER '...'
-		makebackup "$FOLDER"
-		echo done!
+		echo "Moving " ${i%} " to dc_bu/old/ .......";
+		mv ${i%} dc_bu/old/${i%}
+		echo "done!"
+		echo
+		echo "-----"
+		echo
 	done
+
+	# cd back to BU_FOLDER
+	cd dc_bu/
+
 }
 
 #### TO DO: move old content to another directory first ####
 function restore_site {
+	clear
+	echo 
+	echo "-------------------------"
+	echo
+	echo $SITEFOLDER
+	echo
+	echo "-------------------------"
 	
 	# check that we have any backups to restore
 	if [ ! -d "$BU_FOLDER" ]; then
@@ -72,7 +76,7 @@ function restore_site {
 	# list the backups we have available
 	for i in $(ls -d */); do
 		# if it's the folder with old instances of the site, continue
-		if [[ $i == Old* ]]; then
+		if [[ $i == old* ]]; then
 			continue
 		fi;
 		echo ${i%};
@@ -84,6 +88,8 @@ function restore_site {
 	if [[ $BACKUPTORESTORE == Old* ]]; then
 		echo "No such file or directory, try again"
 	fi
+
+	move_wp_content
 
 	cd $BACKUPTORESTORE
 
@@ -112,4 +118,4 @@ read -p "REMINDER: We are about to work on $SERVER - which site are we going to 
 # Create out variable for $wp-content
 WPCONTENT=$SITEFOLDER/wp-content
 cd $WPCONTENT
-restore_site
+restore_site 

@@ -1,0 +1,1 @@
+powershell "C:\MAMP\htdocs\scripts\filezilla\emailNotification.ps1"
