@@ -11,8 +11,6 @@ TIMESTAMP=${DATE}_${TIME}
 
 
 function get_current_core_version {
-    parent_theme=$(get_parent_theme)
-
     local core_version=$(wp --allow-root core version)
     echo "$core_version"
 }
@@ -20,14 +18,14 @@ function get_current_core_version {
 function update_core {
     echo "We will now update WordPress..."
     echo "..."
-    wp core update | tee -a reports/core_update.log
+    wp --allow-root core update | tee -a reports/core_update.log
 
     echo "WordPress update signing off..."
     
 }
 
 function check_latest_update_version {
-    local latest_version=$(wp core check-update --field=version)
+    local latest_version=$(wp --allow-root core check-update --field=version)
 
     echo "$latest_version"
 }
@@ -39,7 +37,7 @@ function report_on_wordpress_updates {
     if [ -f "reports/core.txt" ]; then
         rm reports/core.txt
     fi
-    echo "WordPress is up to date (v$(wp core version))" > reports/core.txt
+    echo "WordPress is up to date (v$(wp --allow-root core version))" > reports/core.txt
     
 
     echo "-----------"
@@ -56,7 +54,7 @@ function commit_wordpress_updates {
     git add wp-admin/
     git add wp-includes/
     git add *.*
-    git commit -m "update WordPress -> $(wp core version)"
+    git commit -m "update WordPress -> $(wp --allow-root core version)"
 
     echo "git signing off..."
 
