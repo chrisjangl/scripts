@@ -1,3 +1,19 @@
+<?php
+/**
+ * Monthly hosting report for Social Digital hosting updates
+ * 
+ * @version 1.2
+ * 
+ * @param site_info.txt
+ * @param account-notices.txt
+ * @param core.txt
+ * @param updated-plugins.txt
+ * @param skipped-plugins.txt
+ * @param theme.txt
+ * kinda....
+ * 
+ */
+?>
 <HTML>
     <head>
         <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
@@ -17,22 +33,6 @@
                     font-weight: 500;
                 }
     
-                /* Trial 1 */
-                .trial1 {
-                    font-family: 'Open Sans', sans-serif;
-                }
-                .trial1 h1, trial1 .h2, .trial1 h3 {
-                    font-family: 'Open Sans Condensed', sans-serif;
-                }
-    
-                /* Trial 2 */
-                .trial2 {
-                    font-family: 'EB Garamond', serif;
-                }
-                .trial2 h1, .trial2 h2, .trial2 h3 {
-                    font-family: 'Oswald', sans-serif;
-                }
-    
                 /* Trial 3 */
                 .trial3 {
                     font-family: 'Merriweather Sans', sans-serif;
@@ -42,25 +42,17 @@
                 .trial3 h1, .trial3 h2, .trial3 h3 {
                     font-family: 'Montserrat', sans-serif;
                 }
-    
-                /* Trial 4 */
-                .trial4 {
-                    font-family: 'Roboto Slab', serif;
-                }
-                .trial4 h1, .trial4 h2, .trial4 h3 {
-                    font-family: 'Raleway', sans-serif;
-                }
-    
-                /* Trial 5 */
-                .trial5 {
-                    font-family: 'Source Sans Pro', sans-serif;
-                }
-                .trial5 h1, .trial5 h2, .trial5 h3 {
-                    font-family: 'Playfair Display', serif;
-                }
-    
+        
                 ul {
                     list-style-type: none;
+                }
+
+                ul.account-notices li {
+                    margin-bottom: 0.8rem;
+                }
+
+                .fa-exclamation-triangle {
+                    color: #E7C101;
                 }
                 .fa-check-square {
                     color: green;
@@ -80,9 +72,33 @@
 
         <?php
     // Site info
-    $site = file('site_info.txt');  
-    if ( $site ) {
-        echo "<h1>" . $site[0] . " September Updates</h1>";
+    if ( file_exists( 'site_info.txt' ) ) {
+
+        $site = file('site_info.txt');  
+        echo "<h1>" . $site[0] . " Updates - " . date('F') . ", " . date('Y') . "</h1>";
+
+    }
+
+    
+    // account notices
+    if ( file_exists( 'account-notices.txt' ) ) {
+
+        $notices = file( 'account-notices.txt' );
+
+        echo "<h2 style=\"text-transform: uppercase; text-decoration: underline;\">Account notices for the month</h2>";
+
+        echo "<ul class=\"fa-ul account-notices\">";
+        foreach ( $notices as $notice ) {
+
+            echo "<li>";
+                echo "<span class=\"fa-li\"><i class=\"far fa-exclamation-triangle\"></i></span>";
+                echo $notice;
+            echo "</li>";
+
+        }
+
+        echo "</ul>";
+
     }
     
     // Core
@@ -121,7 +137,7 @@
         }
         echo "</ul>";
         
-    } 
+    }
 
     //Skipped plugins
     $skipped_plugins = file('skipped-plugins.txt');
