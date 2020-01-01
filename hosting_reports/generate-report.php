@@ -155,7 +155,7 @@
     }
 
     //Skipped plugins
-    if ( file( 'skipped-plugins.txt' ) ) {
+    if ( file_exists( 'skipped-plugins.txt' ) ) {
 
         $skipped_plugins = file('skipped-plugins.txt');
         if ( is_array( $skipped_plugins ) ) {
