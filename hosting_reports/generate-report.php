@@ -71,11 +71,18 @@
     <body class="trial3">
 
         <?php
+
+        // create date label
+        $month = date('F');
+        $year = date('Y');
+
+        $date = "$month, $year";
+
     // Site info
     if ( file_exists( 'site_info.txt' ) ) {
 
         $site = file('site_info.txt');  
-        echo "<h1>" . $site[0] . " Updates - " . date('F') . ", " . date('Y') . "</h1>";
+        echo "<h1>" . $site[0] . " Updates - $date</h1>";
 
     }
 
