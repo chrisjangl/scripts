@@ -102,77 +102,93 @@
     }
     
     // Core
-    $core_updates = file ('core.txt');
-    if ( $core_updates ) {
+    if ( file_exists( 'core.txt' ) ) {
 
-        echo "<h2>Core Updates</h2>";
+        $core_updates = file ('core.txt');
+        if ( $core_updates ) {
 
-        echo "<ul class=\"blank\">";
+            echo "<h2>Core Updates</h2>";
 
-        foreach ( $core_updates as $core_update ) {
+            echo "<ul class=\"blank\">";
 
-            echo "<li>";
-                echo $core_update;
-            echo "</li>";
-            
+            foreach ( $core_updates as $core_update ) {
+
+                echo "<li>";
+                    echo $core_update;
+                echo "</li>";
+                
+            }
+
+            echo "</ul>";
+
         }
-
-        echo "</ul>";
 
     }
 
     echo "<h2>Plugins</h2>";
     // Updated plugins
-    $updated_plugins = file('updated-plugins.txt');
-    if ( is_array( $updated_plugins ) ) {
+    if ( file_exists( 'updated-plugins.txt' ) ) {
 
-        echo "<h3>Updated</h3>";
-        echo "<ul class=\"fa-ul\">";
-
-        foreach ( $updated_plugins as $plugin ) {
-            echo "<li>";
-                echo "<span class=\"fa-li\"><i class=\"far fa-check-square\"></i></span>";
-                echo $plugin;
-            echo "</li>";
+        $updated_plugins = file('updated-plugins.txt');
+        if ( is_array( $updated_plugins ) ) {
+    
+            echo "<h3>Updated</h3>";
+            echo "<ul class=\"fa-ul\">";
+    
+            foreach ( $updated_plugins as $plugin ) {
+                echo "<li>";
+                    echo "<span class=\"fa-li\"><i class=\"far fa-check-square\"></i></span>";
+                    echo $plugin;
+                echo "</li>";
+            }
+            echo "</ul>";
+            
         }
-        echo "</ul>";
-        
+
     }
 
     //Skipped plugins
-    $skipped_plugins = file('skipped-plugins.txt');
-    if ( is_array( $skipped_plugins ) ) {
+    if ( file( 'skipped-plugins.txt' ) ) {
 
-        echo "<h3>Skipped</h3>";
-        echo "<ul class=\"fa-ul\">";
+        $skipped_plugins = file('skipped-plugins.txt');
+        if ( is_array( $skipped_plugins ) ) {
+    
+            echo "<h3>Skipped</h3>";
+            echo "<ul class=\"fa-ul\">";
+    
+            foreach ( $skipped_plugins as $plugin ) {
+                echo "<li>";
+                    echo "<span class=\"fa-li\"><i class=\"far fa-minus-circle\"></i></span>";
+                    echo $plugin;
+                echo "</li>";
+            }
+            echo "</ul>";
+            
+        } 
 
-        foreach ( $skipped_plugins as $plugin ) {
-            echo "<li>";
-                echo "<span class=\"fa-li\"><i class=\"far fa-minus-circle\"></i></span>";
-                echo $plugin;
-            echo "</li>";
-        }
-        echo "</ul>";
-        
-    } 
+    }
 
     // Theme
-    $theme_updates = file('theme.txt');
-    if ( $theme_updates ) {
+    if ( file_exists( 'theme.txt' ) ) {
 
-        echo "<h2>Theme Updates</h2>";
-        echo "<ul class=\"blank\">";
-
-        foreach ( $theme_updates as $theme_update ) {
-
-            echo "<li>";
-                echo $theme_update;
-            echo "</li>";
-            
+        $theme_updates = file('theme.txt');
+        if ( $theme_updates ) {
+    
+            echo "<h2>Theme Updates</h2>";
+            echo "<ul class=\"blank\">";
+    
+            foreach ( $theme_updates as $theme_update ) {
+    
+                echo "<li>";
+                    echo $theme_update;
+                echo "</li>";
+                
+            }
+    
+            echo "</ul>";
+                
         }
-
-        echo "</ul>";
-            
+        
     }
  ?>
     </body>
