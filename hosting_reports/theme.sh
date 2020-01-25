@@ -89,7 +89,7 @@ function commit_parent_theme_update {
 # let's get started
 clear
 
-echo "We'll be updating WordPress on some sites here. Let's get started. "
+echo "We'll be updating the parent theme in $DIRECTORY here. Let's get started. "
 echo
 
 # echo "Here is a list of the directories we have availabe to work with: "

@@ -56,7 +56,7 @@ function skipped_plugins {
 # let's get started
 clear
 
-echo "We'll be updating plugins on some sites here. Let's get started. "
+echo "We'll be updating plugins in $DIRECTORY here. Let's get started. "
 echo
 
 # echo "Here is a list of the directories we have availabe to work with: "
