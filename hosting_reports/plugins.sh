@@ -6,6 +6,7 @@ SERVER="/mnt/c/MAMP/htdocs"
 DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H%M)
 TIMESTAMP=${DATE}_${TIME}
+DIRECTORY=$1
 
 function update_plugins {
     echo "We will now update active plugins..."
@@ -58,20 +59,20 @@ clear
 echo "We'll be updating plugins on some sites here. Let's get started. "
 echo
 
-echo "Here is a list of the directories we have availabe to work with: "
-echo
-echo "-----------------------------------------------------------"
+# echo "Here is a list of the directories we have availabe to work with: "
+# echo
+# echo "-----------------------------------------------------------"
 
 # list the directories available and ask which to work on
 cd $SERVER
-ls
-echo "-----------------------------------------------------------"
+# ls
+# echo "-----------------------------------------------------------"
 
-echo
-read -p "REMINDER: We are about to work on $SERVER - which directory are we backing up right now? " -e SITEFOLDER
+# echo
+# read -p "REMINDER: We are about to work on $SERVER - which directory are we backing up right now? " -e SITEFOLDER
 
 # cd to that folder
-cd $SITEFOLDER
+cd $DIRECTORY
 
 
 # update active plugins
@@ -86,5 +87,5 @@ skipped_plugins
 
 # close up shop
 echo "-----------------------------------------------------------"
-echo "We ran through each step. No guarantees as to success, and there have been no fail-safes"
+echo "We ran through each step. No guarantees as to success, and there have been no fail-safes."
 echo "Adios."

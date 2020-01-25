@@ -8,6 +8,8 @@ SERVER="/mnt/c/MAMP/htdocs"
 DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H%M)
 TIMESTAMP=${DATE}_${TIME}
+DIRECTORY=$1
+
 
 
 function get_current_core_version {
@@ -70,20 +72,20 @@ clear
 echo "We'll be updating WordPress on some sites here. Let's get started. "
 echo
 
-echo "Here is a list of the directories we have availabe to work with: "
-echo
-echo "-----------------------------------------------------------"
+# echo "Here is a list of the directories we have availabe to work with: "
+# echo
+# echo "-----------------------------------------------------------"
 
 # list the directories available and ask which to work on
 cd $SERVER
-ls
-echo "-----------------------------------------------------------"
+# ls
+# echo "-----------------------------------------------------------"
 
-echo
-read -p "REMINDER: We are about to work on $SERVER - which directory are we backing up right now? " -e SITEFOLDER
+# echo
+# read -p "REMINDER: We are about to work on $SERVER - which directory are we backing up right now? " -e SITEFOLDER
 
 # cd to that folder
-cd $SITEFOLDER
+cd $DIRECTORY
 
 
 core_version=$(get_current_core_version)
