@@ -108,5 +108,6 @@ commit_wordpress_updates
 
 # close up shop
 echo "-----------------------------------------------------------"
+echo "We just attempted to update WordPress core in" $DIRECTORY
 echo "We ran through each step. No guarantees as to success, and there have been no fail-safes"
 echo "Adios."
