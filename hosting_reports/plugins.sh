@@ -87,5 +87,6 @@ skipped_plugins
 
 # close up shop
 echo "-----------------------------------------------------------"
+echo "We just attempted to update the active plugins in" $DIRECTORY
 echo "We ran through each step. No guarantees as to success, and there have been no fail-safes."
 echo "Adios."
