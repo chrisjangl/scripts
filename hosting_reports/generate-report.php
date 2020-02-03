@@ -18,7 +18,7 @@
      if ( ! $report ) 
         return false;
 
-    $report_override = $report . '-override.txt)';
+    $report_override = $report . '-override.txt';
     $report = $report . '.txt';
 
     if ( file_exists( $report_override  ) ) {
@@ -28,8 +28,6 @@
     } else {
         return false;
     }
-
-    
  }
 
 ?>
@@ -95,6 +93,7 @@
         $month = date('F');
         $year = date('Y');
 
+        // to-do: take in URL query parameters to be able to generate for another month
         $date = "$month, $year";
 
     // Site info
@@ -194,7 +193,6 @@
     // Theme
     if ( $theme_updates = maybe_load_report( 'theme' ) ) {
 
-        $theme_updates = file('theme.txt');
         if ( $theme_updates ) {
     
             echo "<h2>Theme Updates</h2>";
