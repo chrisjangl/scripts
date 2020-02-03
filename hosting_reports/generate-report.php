@@ -93,8 +93,12 @@
         $month = date('F');
         $year = date('Y');
 
-        // to-do: take in URL query parameters to be able to generate for another month
-        $date = "$month, $year";
+        // check for URL query parameters to be able to generate for another month
+        if ( isset($_GET['month']) ){
+            $date = $_GET['month'];
+        } else {
+            $date = "$month, $year";
+        }
 
     // Site info
     if ( file_exists( 'site_info.txt' ) ) {
