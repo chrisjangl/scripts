@@ -13,6 +13,25 @@
  * kinda....
  * 
  */
+
+ function maybe_load_report( $report ) {
+     if ( ! $report ) 
+        return false;
+
+    $report_override = $report . '-override.txt)';
+    $report = $report . '.txt';
+
+    if ( file_exists( $report_override  ) ) {
+        return file( $report_override );
+    } else if ( file_exists( $report ) ) {
+        return file( $report );
+    } else {
+        return false;
+    }
+
+    
+ }
+
 ?>
 <HTML>
     <head>
@@ -109,9 +128,8 @@
     }
     
     // Core
-    if ( file_exists( 'core.txt' ) ) {
+    if ( $core_updates = maybe_load_report('core') ) {
 
-        $core_updates = file ('core.txt');
         if ( $core_updates ) {
 
             echo "<h2>Core Updates</h2>";
@@ -134,9 +152,8 @@
 
     echo "<h2>Plugins</h2>";
     // Updated plugins
-    if ( file_exists( 'updated-plugins.txt' ) ) {
+    if ( $updated_plugins = maybe_load_report('updated-plugins') ) {
 
-        $updated_plugins = file('updated-plugins.txt');
         if ( is_array( $updated_plugins ) ) {
     
             echo "<h3>Updated</h3>";
@@ -155,9 +172,8 @@
     }
 
     //Skipped plugins
-    if ( file_exists( 'skipped-plugins.txt' ) ) {
+    if ( $skipped_plugins = maybe_load_report( 'skipped-plugins' ) ) {
 
-        $skipped_plugins = file('skipped-plugins.txt');
         if ( is_array( $skipped_plugins ) ) {
     
             echo "<h3>Skipped</h3>";
@@ -176,7 +192,7 @@
     }
 
     // Theme
-    if ( file_exists( 'theme.txt' ) ) {
+    if ( $theme_updates = maybe_load_report( 'theme' ) ) {
 
         $theme_updates = file('theme.txt');
         if ( $theme_updates ) {
