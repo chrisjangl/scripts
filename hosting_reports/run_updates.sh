@@ -1,5 +1,5 @@
 #!/bin/bash
-# update plugins, record in git and report
+# run the scripts to update core, plugins, & theme
 # v1.0
 
 # our variables
