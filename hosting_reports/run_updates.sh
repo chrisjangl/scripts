@@ -1,5 +1,6 @@
 #!/bin/bash
 # run the scripts to update core, plugins, & theme
+# need to pass a diretory against which to run the updates
 # v1.0
 
 # our variables
