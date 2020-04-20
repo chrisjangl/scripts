@@ -2,7 +2,7 @@
 # v1.0
 
 # our variables
-SERVER="/mnt/c/MAMP/htdocs"
+SERVER="/Users/chris/sites"
 DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H%M)
 TIMESTAMP=${DATE}_${TIME}
