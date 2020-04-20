@@ -1,5 +1,6 @@
 #!/bin/bash
-# update plugins, record in git and report
+# for each local SD site (as listed in ./sites.txt),
+# update plugins, WordPress & parent theme, record in git and report
 # v1.0
 
 # our variables
