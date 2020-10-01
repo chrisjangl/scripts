@@ -9,6 +9,7 @@ DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H%M)
 TIMESTAMP=${DATE}_${TIME}
 DIRECTORY=$1
+MONTH=$2
 
 # let's get started
 clear
@@ -27,7 +28,7 @@ cd $DIRECTORY
 git add ./reports/
 
 # determine the commit message (spec. the month)
-read -p "HEY: What month are these reports for? " -e MONTH
+# read -p "HEY: What month are these reports for? " -e MONTH
 
 # commit the reports
 git commit -m "$MONTH reports"
