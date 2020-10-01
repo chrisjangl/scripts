@@ -9,11 +9,12 @@ DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H%M)
 TIMESTAMP=${DATE}_${TIME}
 DIRECTORY=$1
-
+MONTH=$2
 
 
 # let's get started
 clear
+# git commit -m "$(date +%B) reports"
 
 echo "We'll be performing updates for WordPress core, active plugins & the parent theme in $DIRECTORY here. Let's get started. "
 echo
@@ -35,6 +36,12 @@ echo "-----------------------------------------------------------"
 echo "Passing off to theme.sh"
 echo "..."
 bash theme.sh $DIRECTORY
+
+# commit reports for the month
+echo "-----------------------------------------------------------"
+echo "Commiting reports"
+echo "..."
+bash commit_reports.sh $DIRECTORY $MONTH
 
 # close up shop
 echo "-----------------------------------------------------------"

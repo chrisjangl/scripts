@@ -15,6 +15,9 @@ DIRECTORY=$1
 # let's get started
 clear
 
+# we'll need to ask for the current month to pass in as the second argument
+read -p "HEY: What month are we working on/for/in? " -e MONTH
+
 echo "We'll be performing updates for WordPress core, active plugins & the parent theme on all Social Digitally hosted sites. Let's get started. "
 echo
 echo "-----------------------------------------------------------"
@@ -22,8 +25,8 @@ echo "-----------------------------------------------------------"
 for site in $(cat sites.txt )
 do 
     echo "We're about to run the updates on $site."
-    # read -p "Press enter to continue..."
-    bash run_updates.sh $site
+    # we'll need to ask for the current month to pass in as the second argument
+    bash run_updates.sh $site $MONTH
 done;
 
 # close up shop
