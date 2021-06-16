@@ -23,6 +23,7 @@ function update_plugins {
     for plugin in $(wp --allow-root plugin list --update=available --status=active --field=name);
     do
         TITLE=$(wp --allow-root plugin get $plugin --field=title)
+        # look into how we can mark the date here. Maybe also only output final result
         wp --allow-root plugin update $plugin | tee -a reports/plugin_updates.log &&
         VERSION=$(wp --allow-root plugin get $plugin --field=version)
         git add -A wp-content/plugins/$plugin &&
