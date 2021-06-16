@@ -16,7 +16,7 @@ DIRECTORY=$1
 clear
 
 # we'll need to ask for the current month to pass in as the second argument
-read -p "HEY: What month are we working on/for/in? " -e MONTH
+read -p "HEY: What month are we working on/for/in? This will be used to label the reports. " -e MONTH
 
 echo "We'll be performing updates for WordPress core, active plugins & the parent theme on all Social Digitally hosted sites. Let's get started. "
 echo
@@ -31,6 +31,6 @@ done;
 
 # close up shop
 echo "-----------------------------------------------------------"
-echo "We just attempted to update WordPress core, active plugins & the parent theme in $DIRECTOR"
+echo "We just attempted to update WordPress core, active plugins & the parent theme in $DIRECTORY"
 echo "We ran through each step. No guarantees as to success, and there have been no fail-safes."
 echo "Adios."
