@@ -16,6 +16,12 @@ MONTH=$2
 clear
 # git commit -m "$(date +%B) reports"
 
+## create the reports directory if it doesn't already exist
+if [ ! -d ./reports ] 
+    then 
+        mkdir reports/
+    fi
+
 echo "We'll be performing updates for WordPress core, active plugins & the parent theme in $DIRECTORY here. Let's get started. "
 echo
 echo "-----------------------------------------------------------"
