@@ -62,31 +62,22 @@ function commit_wordpress_updates {
 
 }
 
-# function check_theme_update {
-
-# }
-
 # let's get started
 clear
 
 echo "We'll be updating WordPress $DIRECTORY here. Let's get started. "
 echo
 
-# echo "Here is a list of the directories we have availabe to work with: "
-# echo
-# echo "-----------------------------------------------------------"
-
-# list the directories available and ask which to work on
 cd $SERVER
-# ls
-# echo "-----------------------------------------------------------"
-
-# echo
-# read -p "REMINDER: We are about to work on $SERVER - which directory are we backing up right now? " -e SITEFOLDER
 
 # cd to that folder
 cd $DIRECTORY
 
+## create the reports directory if it doesn't already exist
+if [ ! -d ./reports ] 
+then 
+    mkdir reports/
+fi
 
 core_version=$(get_current_core_version)
 echo "WordPress is currently at version: " $core_version
