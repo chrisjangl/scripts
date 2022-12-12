@@ -1,0 +1,18 @@
+# tags posts as Migrate category
+for i in $(cat ) ; do wp post term add $i category Migrate ; done
+
+
+## create command to copy featured images
+for i in $(cat extra-posts.txt) ;
+do
+    FEATURED_IMG="$(wp post meta pluck $(wp post meta get $i _thumbnail_id) _wp_attachment_metadata file)"
+    echo "wp-content/uploads/$FEATURED_IMG" >> featured_img_paths.txt
+done
+
+# run generated command to copy featured images
+for i in $(cat featured_img_paths.txt) ;
+do
+    $($i)
+done
+
+
