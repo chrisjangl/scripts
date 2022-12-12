@@ -1,0 +1,10 @@
+## set featured images
+for i in $(cat extra-posts-that-need-to-be-imported.txt ); 
+    do 
+        if [ "$(ls -A ./post_thumbnails/$i/)" ]; 
+        then 
+            wp media import ./post_thumbnails/$i/* --post_id=$i --featured_image
+        else 
+            echo "niente acqui, jeffe: $i" >> skipped_featured_imgs; 
+        fi; 
+done
