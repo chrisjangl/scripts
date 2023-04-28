@@ -93,9 +93,9 @@ echo "We'll be updating the parent theme in $DIRECTORY here. Let's get started. 
 echo
 
 # cd to that folder
-cd $SERVER
+# cd $SERVER
 
-cd $DIRECTORY
+# cd $DIRECTORY
 
 ## create the reports directory if it doesn't already exist
 if [ ! -d ./reports ] 
