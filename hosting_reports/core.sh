@@ -68,10 +68,10 @@ clear
 echo "We'll be updating WordPress $DIRECTORY here. Let's get started. "
 echo
 
-cd $SERVER
+# cd $SERVER
 
 # cd to that folder
-cd $DIRECTORY
+# cd $DIRECTORY
 
 ## create the reports directory if it doesn't already exist
 if [ ! -d ./reports ] 

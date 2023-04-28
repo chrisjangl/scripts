@@ -18,10 +18,10 @@ echo "We'll be committing the reports for $DIRECTORY here. Let's get started. "
 echo
 
 # change to MAMP directory
-cd $SERVER
+# cd $SERVER
 
 # cd to the site folder
-cd $DIRECTORY
+# cd $DIRECTORY
 
 # @TODO: we should clear the working directory first, no?
 # add the reports/ dir to the working directory
