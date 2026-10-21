@@ -1,3 +1,4 @@
+#!/bin/zsh
 # update parent theme, record in git and report
 # v1.0
 

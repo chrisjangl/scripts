@@ -1,3 +1,4 @@
+#!/bin/zsh
 # update plugins, record in git and report
 # v1.0
 
@@ -7,6 +8,12 @@ DATE=$(date +%Y-%m-%d)
 TIME=$(date +%H%M)
 TIMESTAMP=${DATE}_${TIME}
 DIRECTORY=$1
+
+# optional per-site testing, from the site's Wordpress-updates/ repo - run with SKIP_TESTS=1 to bypass
+TESTS="Wordpress-updates/bin"
+if [ ! -f "$TESTS/quick-check.mjs" ]; then
+    export SKIP_TESTS=1
+fi
 
 function update_plugins {
     echo "We will now update active plugins..."
@@ -20,15 +27,25 @@ function update_plugins {
         rm reports/plugin_updates.log
     fi
 
-    for plugin in $(wp --allow-root plugin list --update=available --status=active --field=name);
+    for plugin in $(wp --allow-root plugin list --update=available --status=active --field=name 2>/dev/null);
     do
         TITLE=$(wp --allow-root plugin get $plugin --field=title)
+        OLD_VERSION=$(wp --allow-root plugin get $plugin --field=version)
         # look into how we can mark the date here. Maybe also only output final result
         wp --allow-root plugin update $plugin | tee -a reports/plugin_updates.log &&
         VERSION=$(wp --allow-root plugin get $plugin --field=version)
+
+        # stop at the first plugin that breaks the site, leaving it uncommitted for inspection
+        if [ -z "$SKIP_TESTS" ] && ! node $TESTS/quick-check.mjs; then
+            echo "$TITLE ($OLD_VERSION -> $VERSION) broke the site - not committed, remaining updates skipped" | tee ./reports/failed-plugins.txt
+            echo "To roll back: git checkout -- wp-content/plugins/$plugin && git clean -fd wp-content/plugins/$plugin"
+            echo "              and, if it changed the database, wp db import the latest reports/pre-update_*.sql"
+            break
+        fi
+
         git add -A wp-content/plugins/$plugin &&
-        git commit -m "$(printf "update plugin: $TITLE to $VERSION")"
-        echo "$TITLE -> $VERSION" >> ./reports/updated-plugins.txt
+        git commit -m "$(printf "update plugin: $TITLE $OLD_VERSION -> $VERSION")"
+        echo "$TITLE ($OLD_VERSION -> $VERSION)" >> ./reports/updated-plugins.txt
     done;
 
     echo "Plugin updates signing off..."
@@ -44,7 +61,7 @@ function skipped_plugins {
         rm reports/skipped-plugins.txt
     fi
     
-    for plugin in $(wp --allow-root plugin list --update=available --status=inactive --field=name);
+    for plugin in $(wp --allow-root plugin list --update=available --status=inactive --field=name 2>/dev/null);
     do
         TITLE=$(wp --allow-root plugin get $plugin --field=title)
         echo "$TITLE -> Plugin not active - please remove if no longer in use" >> ./reports/skipped-plugins.txt

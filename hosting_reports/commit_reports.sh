@@ -1,3 +1,4 @@
+#!/bin/zsh
 # commit hosting reports to git repo
 # v1.0
 

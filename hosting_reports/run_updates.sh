@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 # run the scripts to update core, plugins, & theme
 # need to pass a diretory against which to run the updates
 # v1.0
@@ -10,6 +10,12 @@ TIME=$(date +%H%M)
 TIMESTAMP=${DATE}_${TIME}
 DIRECTORY=$1
 MONTH=$2
+
+# optional per-site testing, from the site's Wordpress-updates/ repo - run with SKIP_TESTS=1 to bypass
+TESTS="Wordpress-updates/bin"
+if [ ! -f "$TESTS/quick-check.mjs" ]; then
+    export SKIP_TESTS=1
+fi
 
 
 # let's get started
@@ -26,28 +32,45 @@ echo "We'll be performing updates for WordPress core, active plugins & the paren
 echo
 echo "-----------------------------------------------------------"
 
+# backup & baseline before touching anything
+if [ -z "$SKIP_TESTS" ]; then
+    bash $TESTS/pre-update.sh || exit 1
+fi
+
 # pass off to core.sh
 echo "Passing off to core.sh....."
 echo "..."
-bash core.sh $DIRECTORY
+bash update_core.sh $DIRECTORY
+
+if [ -z "$SKIP_TESTS" ] && ! node $TESTS/quick-check.mjs; then
+    echo "The WordPress core update broke the site - stopping before plugins & theme."
+    exit 1
+fi
 
 # pass off to plugins.sh
 echo "-----------------------------------------------------------"
 echo "Passing off to plugins.sh"
 echo "..."
-bash plugins.sh $DIRECTORY
+bash update_plugins.sh $DIRECTORY
 
 # pass off to theme.sh
 echo "-----------------------------------------------------------"
 echo "Passing off to theme.sh"
 echo "..."
-bash theme.sh $DIRECTORY
+bash update_theme.sh $DIRECTORY
+
+# test the updated site
+if [ -z "$SKIP_TESTS" ]; then
+    echo "-----------------------------------------------------------"
+    echo "Running the full test suite..."
+    bash $TESTS/post-update.sh
+fi
 
 # commit reports for the month
 echo "-----------------------------------------------------------"
 echo "Commiting reports"
 echo "..."
-bash commit_reports.sh $DIRECTORY $MONTH
+# bash commit_reports.sh $DIRECTORY $MONTH
 
 # close up shop
 echo "-----------------------------------------------------------"

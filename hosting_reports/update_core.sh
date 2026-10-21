@@ -1,3 +1,4 @@
+#!/bin/zsh
 # update WordPress core, record in git and report
 # v1.0
 
